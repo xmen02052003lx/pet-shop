@@ -29,9 +29,9 @@ const Chatbot = () => {
         },
         {
           headers: {
+            //   This is my api key: sk-proj-7ip9BWfTQZcoXifnRdjZT3BlbkFJgsdRi04PfyDVZddDTxIH
             "Content-Type": "application/json",
-            Authorization:
-              "Bearer sk-proj-7ip9BWfTQZcoXifnRdjZT3BlbkFJgsdRi04PfyDVZddDTxIH" // Replace YOUR_API_KEY with your actual API key
+            Authorization: `Bearer API_KEY` // Replace YOUR_API_KEY with your actual API key
           }
         }
       )
@@ -82,71 +82,3 @@ const Chatbot = () => {
 }
 
 export default Chatbot
-
-// import React, { useState } from "react"
-// import axios from "axios"
-
-// const Chatbot = () => {
-//   const [prompt, setPrompt] = useState("")
-//   const [response, setResponse] = useState("")
-//   const [previousResponse, setPreviousResponse] = useState("")
-
-//   const handleSubmit = async e => {
-//     e.preventDefault()
-
-//     try {
-//       const res = await axios.post(
-//         "https://api.openai.com/v1/chat/completions",
-//         {
-//           model: "gpt-3.5-turbo-0125",
-//           messages: [
-//             {
-//               role: "system",
-//               content:
-//                 "You are Customer service representative of a pet shop that sells products for pet (cats and dogs)"
-//             },
-//             {
-//               role: "user",
-//               content: prompt
-//             }
-//           ]
-//         },
-//         {
-//           headers: {
-//             "Content-Type": "application/json",
-//             Authorization:
-//               "Bearer sk-proj-7ip9BWfTQZcoXifnRdjZT3BlbkFJgsdRi04PfyDVZddDTxIH" // Replace YOUR_API_KEY with your actual API key
-//           }
-//         }
-//       )
-
-//       setPreviousResponse(response) // Store the previous response
-//       setResponse(res.data.choices[0].message.content)
-//     } catch (error) {
-//       console.error(error)
-//     }
-//   }
-
-//   return (
-//     <div>
-//       <h1>Chatbot</h1>
-//       <form onSubmit={handleSubmit}>
-//         <textarea
-//           value={prompt}
-//           onChange={e => setPrompt(e.target.value)}
-//           placeholder="Enter your prompt"
-//           rows="4"
-//           cols="50"
-//         />
-//         <br />
-//         <button type="submit">Submit</button>
-//       </form>
-//       <h2>Previous Response:</h2>
-//       <p>{previousResponse}</p>
-//       <h2>Response:</h2>
-//       <p>{response}</p>
-//     </div>
-//   )
-// }
-
-// export default Chatbot

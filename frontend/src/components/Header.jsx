@@ -55,7 +55,7 @@ const Header = () => {
               </LinkContainer>
               <LinkContainer to="/chatbot">
                 <Nav.Link>
-                  <FaRobot /> ChatBot
+                  <FaRobot /> ChatBot - CSKH
                 </Nav.Link>
               </LinkContainer>
               {userInfo ? (
