@@ -30,7 +30,7 @@ const Chatbot = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer API_KEY` // Replace YOUR_API_KEY with your actual API key
+            Authorization: `Bearer sk-proj-7ip9BWfTQZcoXifnRdjZT3BlbkFJgsdRi04PfyDVZddDTxIH` // Replace YOUR_API_KEY with your actual API key
           }
         }
       )
