@@ -29,7 +29,7 @@ const Chatbot = () => {
         },
         {
           headers: {
-            //   This is my api key: sk-proj-7ip9BWfTQZcoXifnRdjZT3BlbkFJgsdRi04PfyDVZddDTxIH
+            //   This is my api key: remove @ "@sk-proj-7ip9BWfTQZcoXifnRdjZT3BlbkFJgsdRi04PfyDVZddDTxIH"
             "Content-Type": "application/json",
             Authorization: `Bearer API_KEY` // Replace YOUR_API_KEY with your actual API key
           }
