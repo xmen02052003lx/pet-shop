@@ -24,7 +24,7 @@ import Meta from "../components/Meta"
 import { addToCart } from "../slices/cartSlice.js"
 
 const ProductScreen = () => {
-  const { id: productId } = useParams()
+  const { id: productId } = useParams() // come from the URL
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -36,7 +36,7 @@ const ProductScreen = () => {
   const {
     data: product,
     isLoading,
-    refetch, // what's this ?
+    refetch,
     error
   } = useGetProductDetailsQuery(productId) // if we dont use toolkit, we have to define "isLoading" and "error" ourself, which is a pain
 
@@ -55,8 +55,10 @@ const ProductScreen = () => {
         rating,
         comment
       }).unwrap()
-      refetch() // what's this ??
+      refetch() // re-fetch so the data be fresh
       toast.success("Review created successfully")
+      setRating(0)
+      setComment("")
     } catch (err) {
       toast.error(err?.data?.message || err.error)
     }

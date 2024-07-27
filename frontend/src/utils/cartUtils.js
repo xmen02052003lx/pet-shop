@@ -19,7 +19,7 @@ export const updateCart = state => {
     Number(state.itemsPrice) +
     Number(state.shippingPrice) +
     Number(state.taxPrice)
-
+  // Our redux state almost always match up with our local Storage
   localStorage.setItem("cart", JSON.stringify(state))
 
   return state

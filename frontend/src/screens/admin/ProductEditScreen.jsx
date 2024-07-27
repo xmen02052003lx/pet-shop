@@ -76,8 +76,9 @@ const ProductEditScreen = () => {
     formData.append("image", e.target.files[0])
     try {
       const res = await uploadProductImage(formData).unwrap()
-      toast.success(res.message)
-      setImage(res.image)
+      toast.success(res.message) // because remember in upload route we have this message: "Image uploaded successfully",
+
+      setImage(res.image) // because we also sent the image path back iin a property called "image" in the upload route
     } catch (err) {
       toast.error(err?.data?.message || err.error)
     }
@@ -100,7 +101,7 @@ const ProductEditScreen = () => {
             <Form.Group controlId="name">
               <Form.Label>Name</Form.Label>
               <Form.Control
-                type="name"
+                type="text"
                 placeholder="Enter name"
                 value={name}
                 onChange={e => setName(e.target.value)}

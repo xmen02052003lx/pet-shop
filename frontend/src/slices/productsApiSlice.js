@@ -3,20 +3,19 @@ import { apiSlice } from "./apiSlice" // this slice dealding with asynchronous r
 
 export const productsApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
+    // with this, we dont need to use fetch/axios (which is cool in my opinion)
     getProducts: builder.query({
       query: ({ keyword, pageNumber }) => ({
+        // because we want this arrow function return an object so: ({....})
         // this is a query so GET request
         url: PRODUCTS_URL,
+        //The query to our backend is constructed for us by using RTK Query.
+        // So while we never actually write a request to /api/products?pageNumber=2
+        // RTK Query constructs that url for us when we pass a params object to the Query.
         params: { keyword, pageNumber }
       }),
       keepUnusedDataFor: 5,
       providesTags: ["Products"]
-    }),
-    getProductDetails: builder.query({
-      query: productId => ({
-        url: `${PRODUCTS_URL}/${productId}`
-      }),
-      keepUnusedDataFor: 5
     }),
     getProductDetails: builder.query({
       query: productId => ({
@@ -29,7 +28,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         url: `${PRODUCTS_URL}`,
         method: "POST"
       }),
-      invalidatesTags: ["Product"]
+      invalidatesTags: ["Product"] // stop it from being cached so we'll have fresh data
     }),
     updateProduct: builder.mutation({
       query: data => ({
@@ -69,6 +68,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
 })
 
 // this is a convention: when it is a query => "use" + query's name + "Query"
+// this is what we bring into our component whenever we want to use this and fetch our data
 export const {
   useGetProductsQuery,
   useGetProductDetailsQuery,

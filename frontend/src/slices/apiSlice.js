@@ -17,5 +17,5 @@ export const apiSlice = createApi({
   //   baseQuery: baseQueryWithAuth, // Use the customized baseQuery
   baseQuery,
   tagTypes: ["Product", "Order", "User"], // define the tag of types of data fetching from api
-  endpoints: builder => ({})
+  endpoints: builder => ({}) // there is a method called "injectEndpoints" to inject endpoint to this
 })

@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 
 const reviewSchema = mongoose.Schema(
+  // This is what a single review should look like.
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -52,12 +53,12 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    reviews: [reviewSchema],
+    reviews: [reviewSchema], // reviewSchema is what a single review should look like. And This is an Array of reviews and each review looks like reviewSchema
     rating: {
       type: Number,
       required: true,
       default: 0
-    },
+    }, // the average rating of all the review.rating
     numReviews: {
       type: Number,
       required: true,

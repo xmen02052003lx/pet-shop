@@ -7,31 +7,19 @@ import jwt from "jsonwebtoken"
 // @route POST /api/users/login
 // @access Public
 const authUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body
+  const { email, password } = req.body // we have to set up the middleware for parsing body data for this to work (in server.js)
 
   const user = await User.findOne({ email })
 
   if (user && (await user.matchPassword(password))) {
     generateToken(res, user._id)
 
-    // sign() params: payload, secret, when to expire?
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d"
-    })
-
-    // Set JWT as HTTP-Only cookie
-    res.cookie("jwt", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV !== "development",
-      sameSite: "strict", // prevent attack
-      maxAge: 24 * 60 * 60 * 1000 // 1 day (millisecond)
-    })
-
-    res.json({
+    res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin
+      // instead of sending "token: token" to the client to store in the localStorage, we store in HTTP-Only cookie as above
     })
   } else {
     res.status(401)
@@ -51,6 +39,7 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("User already exists")
   }
 
+  // we need to encrypt the plain text password, we can do it here, but we want to keep our controller as slim as possible, so we'll do it in our User model
   const user = await User.create({
     name,
     email,
@@ -76,7 +65,7 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route POST /api/users/logout
 // @access Private
 const logoutUser = asyncHandler(async (req, res) => {
-  res.clearCookie("jwt")
+  res.clearCookie("jwt") // because we store JWT in httpOnly cookie on the server
   res.status(200).json({ message: "Logged out successfully" })
 })
 
@@ -87,7 +76,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
 
   if (user) {
-    res.json({
+    res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
@@ -100,7 +89,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 })
 
 // @desc Update user profile
-// @route PUT /api/users/profile
+// @route PUT /api/users/profile !NOTE: notice here we dont pass id (/:id) because we use the token because this is for the user to update their own profile, so they only have access to their own user data and that is encoded in JWT so no need to pass an ID into here
 // @access Private
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
@@ -110,6 +99,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     user.email = req.body.email || user.email
 
     if (req.body.password) {
+      // because the password is hashed, so for safe we dont want to mess with it except we really want to update it (because the .pre("save") in the User model), we'll put it here instead of doing it like user.name and user.email
       user.password = req.body.password
     }
 
@@ -149,7 +139,7 @@ const getUserByID = asyncHandler(async (req, res) => {
   }
 })
 
-// @desc Delete users
+// @desc Delete user
 // @route DELETE /api/users/:id
 // @access Private/Admin
 const deleteUser = asyncHandler(async (req, res) => {
@@ -161,14 +151,14 @@ const deleteUser = asyncHandler(async (req, res) => {
       throw new Error("Can not delete admin user")
     }
     await User.deleteOne({ _id: user._id })
-    res.json({ message: "User removed" })
+    res.status(200).json({ message: "User removed" })
   } else {
     res.status(404)
     throw new Error("User not found")
   }
 })
 
-// @desc Update users
+// @desc Update user
 // @route PUT /api/users/:id
 // @access Private/Admin
 const updateUser = asyncHandler(async (req, res) => {

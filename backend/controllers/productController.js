@@ -5,22 +5,25 @@ import Product from "../models/productModel.js"
 // @route GET /api/products
 // @access Public
 const getProducts = asyncHandler(async (req, res) => {
-  const pageSize = process.env.PAGINATION_LIMIT
-  const page = Number(req.query.pageNumber) || 1
+  const pageSize = process.env.PAGINATION_LIMIT // number of products per page
+  const page = Number(req.query.pageNumber) || 1 // current page
 
   const keyword = req.query.keyword
     ? {
         name: {
+          // the reason why we use regular expression but not directly match because let say we want to search for "Iphone 10", but we only input the keyword "phone", so we dont want it to match entirely but just part of it
           $regex: req.query.keyword,
-          $options: "i"
+          $options: "i" // make it case-insensitive
         }
       }
-    : {}
+    : {} // else we dont want to do anything here because there is no keyword
 
-  const count = await Product.countDocuments({ ...keyword })
+  // total number of products
+  const count = await Product.countDocuments({ ...keyword }) // limit the count based on keyword
+  // find products with that keyword (if there is a keyword)
   const products = await Product.find({ ...keyword })
-    .limit(pageSize)
-    .skip(pageSize * (page - 1))
+    .limit(pageSize) // limit the products we fetched from the database
+    .skip(pageSize * (page - 1)) // if we're on the 2nd page, skip the products in the 1st page, if we're on the 3rd page, skip the products in the 2nd and 1st page
 
   res.json({ products, page, pages: Math.ceil(count / pageSize) })
 })
@@ -111,6 +114,8 @@ const createProductReview = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id)
 
   if (product) {
+    // we dont want the same person review twice
+    // "reviews" is the sub-collection
     const alreadyReviewed = product.reviews.find(
       r => r.user.toString() === req.user._id.toString()
     )
@@ -147,9 +152,9 @@ const createProductReview = asyncHandler(async (req, res) => {
 // @route   GET /api/products/top
 // @access  Public
 const getTopProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find().sort({ rating: -1 }).limit(3)
+  const products = await Product.find().sort({ rating: -1 }).limit(3) // sort by rating and only get 3 product
 
-  res.json(products)
+  res.status(200).json(products)
 })
 
 export {

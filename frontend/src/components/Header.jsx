@@ -1,7 +1,7 @@
 import { Navbar, Nav, Container, Badge, NavDropdown } from "react-bootstrap"
 import { FaRobot, FaShoppingCart, FaUser } from "react-icons/fa"
 import { LinkContainer } from "react-router-bootstrap"
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector, useDispatch } from "react-redux" // useDispatch is used to interact with our state's actions, and useSelector is used to access our state in the store.js
 import { useNavigate } from "react-router-dom"
 import { useLogoutMutation } from "../slices/usersApiSlice"
 import { logout } from "../slices/authSlice"
@@ -10,21 +10,21 @@ import logo from "../assets/logo.png"
 import { resetCart } from "../slices/cartSlice"
 
 const Header = () => {
-  const { cartItems } = useSelector(state => state.cart)
+  const { cartItems } = useSelector(state => state.cart) // this is the "cart: cartSliceReducer" property in the store.js file. Whatever we put in store.js we can access it here. So we can access anything in cartSliceReducer such as cartItems, itemsPrice, taxPrice,... (state.cartItems, state.itemsPrice,... in cartSlice.js)
   const { userInfo } = useSelector(state => state.auth)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  //   Why put this in "[]" ???
+  //   Why put this in "[]" ??? - Destructure
+  // we import the useLogoutMutation but we need a actual function to call
   const [logoutApiCall] = useLogoutMutation()
 
   const logoutHandler = async () => {
     try {
       await logoutApiCall().unwrap()
-      dispatch(logout())
-      // NOTE: here we need to reset cart state for when a user logs out so the next
-      // user doesn't inherit the previous users cart and shipping
+      dispatch(logout()) // clear the local storage
+      // NOTE: here we need to reset cart state for when a user logs out so the next user doesn't inherit the previous users cart and shipping
       dispatch(resetCart())
       navigate("/login")
     } catch (err) {
@@ -48,6 +48,7 @@ const Header = () => {
                   <FaShoppingCart /> Cart
                   {cartItems.length > 0 && (
                     <Badge pill bg="success" style={{ marginLeft: "5px" }}>
+                      {/* "a" is accumulator, "c" is current (current cart item that we're currently looping through)  c.qty because we want it to be 2 even though is is 2 of the same item */}
                       {cartItems.reduce((a, c) => a + c.qty, 0)}
                     </Badge>
                   )}

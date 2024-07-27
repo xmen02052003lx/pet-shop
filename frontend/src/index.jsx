@@ -7,7 +7,7 @@ import {
   RouterProvider
 } from "react-router-dom"
 import { Provider } from "react-redux"
-import store from "./store.js"
+import store from "./store.js" // this is the redux store to provide to our app
 //import "bootstrap/dist/css/bootstrap.min.css" // we need to import bootstrap in order for react-bootstrap to work; This is the default, we gonna import the custom though
 import "./assets/styles/bootstrap.custom.css"
 import "./assets/styles/index.css"
@@ -41,6 +41,7 @@ const router = createBrowserRouter(
       <Route path="/search/:keyword" element={<HomeScreen />} />
       <Route path="/page/:pageNumber" element={<HomeScreen />} />
       <Route
+        // we also want pagination on search result as well
         path="/search/:keyword/page/:pageNumber"
         element={<HomeScreen />}
       />
@@ -76,9 +77,13 @@ const router = createBrowserRouter(
 const root = ReactDOM.createRoot(document.getElementById("root"))
 root.render(
   <React.StrictMode>
+    {/* we gonna add Helmet provider around all of those, it can help us to add the page's title, we use this functionality in Meta.jsx component */}
     <HelmetProvider>
+      {/* Redux provider */}
       <Provider store={store}>
-        <PayPalScriptProvider deferLoading={true}>
+        {/* PayPal script provider */}
+        <PayPalScriptProvider deferLoading={false}>
+          {/* Router provider */}
           <RouterProvider router={router} />
         </PayPalScriptProvider>
       </Provider>

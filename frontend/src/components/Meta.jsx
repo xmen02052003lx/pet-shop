@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async"
 
 const Meta = ({
+  // we can customize those on every page
   title = "Welcome To My Shop",
   description = "We sell the best products for cheap",
   keywords = "electronics, buy electronics, cheap electroincs"

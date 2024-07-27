@@ -19,7 +19,7 @@ const ShippingScreen = () => {
 
   const [address, setAddress] = useState(
     (shippingAddress && shippingAddress.address) || ""
-  )
+  ) // if there are shippingAddress and shippingAddress.address then set this to the already exist shippingAddress.address otherwise empty string
   const [city, setCity] = useState(
     (shippingAddress && shippingAddress.city) || ""
   )
@@ -88,7 +88,7 @@ const ShippingScreen = () => {
           ></Form.Control>
         </Form.Group>
 
-        <Button type="submit" variant="primary">
+        <Button type="submit" variant="primary" className="my-2">
           Continue
         </Button>
       </Form>

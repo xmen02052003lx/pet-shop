@@ -6,12 +6,11 @@ import Loader from "../components/Loader"
 import Message from "../components/Message"
 import Paginate from "../components/Paginate"
 import ProductCarousel from "../components/ProductCarousel"
-import Meta from "../components/Meta"
 const HomeScreen = () => {
   const { pageNumber, keyword } = useParams()
 
   const { data, isLoading, error } = useGetProductsQuery({
-    keyword,
+    keyword, // put the keyword first (before pageNumber) because that the way it is set up in productsApiSlice
     pageNumber
   }) // if we dont use toolkit, we have to define "isLoading" and "error" ourself, which is a pain
 
@@ -20,6 +19,7 @@ const HomeScreen = () => {
       {!keyword ? (
         <ProductCarousel />
       ) : (
+        // if there is a keyword (so we are looking at the search result), show the "Go Back" button
         <Link to="/" className="btn btn-light mb-4">
           Go Back
         </Link>
@@ -32,7 +32,6 @@ const HomeScreen = () => {
         </Message>
       ) : (
         <>
-          <Meta />
           <h1>Sản phẩm mới nhất</h1>
           <Row>
             {data.products.map(product => (

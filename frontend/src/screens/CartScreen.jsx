@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux" // useDispatch is used to interact with our state's actions, and useSelector is used to interact with our state in the store.js
 import {
   Row,
   Col,
@@ -24,7 +24,7 @@ const CartScreen = () => {
 
   const addToCartHandler = (product, qty) => {
     // what we pass in here will be in the action.payload
-    dispatch(addToCart({ ...product, qty }))
+    dispatch(addToCart({ ...product, qty })) // why in {...product} already have qty but here we have to pass qty at the end of the object? BECAUSE: this will update the old qty to the new qty
   }
 
   const removeFromCartHandler = id => {
@@ -32,6 +32,7 @@ const CartScreen = () => {
   }
 
   const checkoutHandler = () => {
+    // in the login screen we check if "redirect" is there, if it is then redirect to /shipping
     navigate("/login?redirect=/shipping")
   }
 
@@ -93,7 +94,10 @@ const CartScreen = () => {
                 Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
                 items
               </h2>
-              ${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0)}
+              $
+              {cartItems
+                .reduce((acc, item) => acc + item.qty * item.price, 0)
+                .toFixed(2)}
             </ListGroup.Item>
             <ListGroup.Item>
               <Button

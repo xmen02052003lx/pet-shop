@@ -4,6 +4,7 @@ import multer from "multer"
 
 const router = express.Router()
 
+// store the image in the disk of the server
 const storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, "uploads/")
@@ -32,8 +33,9 @@ function fileFilter(req, file, cb) {
   }
 }
 
+// this is where the real upload happenning
 const upload = multer({ storage, fileFilter })
-const uploadSingleImage = upload.single("image") // whatever we put in .single() (in this case: "image") is fieldname in file.fieldname // we make it single because we want to upload a single file, we can upload multiple files as an array (it's a little more advanced, but we can do that)
+const uploadSingleImage = upload.single("image") // whatever we put in .single() (in this case: "image") is fieldname in file.fieldname (so if we call it "random" then we have file.fieldname = "random") // we make it single because we want to upload a single file, we can upload multiple files as an array (it's a little more advanced, but we can do that)
 
 router.post("/", (req, res) => {
   uploadSingleImage(req, res, function (err) {
