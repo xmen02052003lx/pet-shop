@@ -38,7 +38,8 @@ app.get("/api/config/paypal", (req, res) =>
 
 if (process.env.NODE_ENV === "production") {
   const __dirname = path.resolve() // set __dirname to current directory
-  app.use("/uploads", express.static("/var/data/uploads"))
+  // app.use("/uploads", express.static("/var/data/uploads"))
+  app.use("/uploads", express.static("/uploads"))
   app.use(express.static(path.join(__dirname, "/frontend/build"))) // set the React build folder (which is in our /frontend/build, because if we're building a React app and we do npm run build, it creates a build folder with all of our static assets) to be a static folder
 
   // any route that is not api will be redirected to index.html
